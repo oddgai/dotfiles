@@ -11,3 +11,8 @@ docs
 {{ if ne .chezmoi.os "darwin" -}}
 Library/LaunchAgents/com.oddgai.dotfiles-improve.plist
 {{ end -}}
+
+{{ if ne .chezmoi.os "linux" -}}
+.config/systemd/user/dotfiles-improve.service
+.config/systemd/user/dotfiles-improve.timer
+{{ end -}}

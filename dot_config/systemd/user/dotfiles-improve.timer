@@ -1,0 +1,9 @@
+[Unit]
+Description=Run dotfiles self-improvement daily
+
+[Timer]
+OnCalendar=*-*-* 13:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

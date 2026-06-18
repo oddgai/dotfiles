@@ -1,0 +1,6 @@
+[Unit]
+Description=dotfiles self-improvement run
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/dotfiles-improve.sh
