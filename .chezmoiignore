@@ -7,3 +7,7 @@ docs
 # macOS only
 .config/karabiner/karabiner.json
 {{ end -}}
+
+{{ if ne .chezmoi.os "darwin" -}}
+Library/LaunchAgents/com.oddgai.dotfiles-improve.plist
+{{ end -}}
