@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+{{ if eq .chezmoi.os "darwin" -}}
+# launchd plist hash: {{ include "Library/LaunchAgents/com.oddgai.dotfiles-improve.plist.tmpl" | sha256sum }}
+PLIST="${HOME}/Library/LaunchAgents/com.oddgai.dotfiles-improve.plist"
+if [ -f "${PLIST}" ]; then
+  launchctl bootout "gui/$(id -u)/com.oddgai.dotfiles-improve" 2>/dev/null || true
+  launchctl bootstrap "gui/$(id -u)" "${PLIST}"
+  echo "launchd agent (re)registered"
+fi
+{{ else if eq .chezmoi.os "linux" -}}
+# systemd units hash: {{ include "dot_config/systemd/user/dotfiles-improve.timer" | sha256sum }}{{ include "dot_config/systemd/user/dotfiles-improve.service" | sha256sum }}
+if command -v systemctl >/dev/null 2>&1; then
+  systemctl --user daemon-reload
+  systemctl --user enable --now dotfiles-improve.timer
+  echo "systemd user timer enabled"
+fi
+{{ end -}}
