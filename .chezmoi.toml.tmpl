@@ -1,0 +1,10 @@
+{{- $email := promptStringOnce . "email" "Git email" -}}
+{{- $databricksClusterId := promptStringOnce . "databricksClusterId" "Databricks cluster id (leave blank if none)" -}}
+
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+[data]
+    email = {{ $email | quote }}
+{{- if $databricksClusterId }}
+    databricksClusterId = {{ $databricksClusterId | quote }}
+{{- end }}

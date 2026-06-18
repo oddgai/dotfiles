@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Re-runs automatically whenever the package list below changes.
+# Brewfile hash: {{ include "dot_Brewfile.tmpl" | sha256sum }}
+
+if command -v brew >/dev/null 2>&1; then
+  echo "==> brew bundle (~/.Brewfile)"
+  brew bundle --global --no-lock
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  echo "==> mise install"
+  mise install
+fi
