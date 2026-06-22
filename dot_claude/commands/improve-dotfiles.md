@@ -10,5 +10,5 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Bash(git:*), Bash(gh:*), Bash(jq:*
   git 履歴・open issue・リポの陳腐化も見る。
 - `$ARGUMENTS` が与えられていれば、その領域に注力する。
 - 必ず skill の品質ゲート（verify-diff / content-review / publicity-review）を通す。
-- 成果物は `improve/dotfiles-local-YYYYMMDD` ブランチの PR。確信ある改善が無ければ何もしない。
+- 成果物は `claude/dotfiles-local-YYYY-MM-DD` ブランチの PR。確信ある改善が無ければ何もしない。
 - main への直 push・自動 merge はしない。
