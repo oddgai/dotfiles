@@ -3,8 +3,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# launchd / systemd は最小PATHで起動するため明示的に補う
-export PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${HOME}/.rd/bin:/usr/bin:/bin"
+# launchd / systemd は最小PATHで起動するため明示的に補う。
+# macOS(Apple Silicon)=/opt/homebrew、Linux/WSL2(linuxbrew)=/home/linuxbrew/.linuxbrew、
+# mise のランタイム shims も両OSで通す（存在しないパスは無視されるだけ）。
+export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:${HOME}/.local/bin:${HOME}/.local/share/mise/shims:${HOME}/.rd/bin:/usr/bin:/bin"
 
 MAX_OPEN_PR="${DOTFILES_IMPROVE_MAX_OPEN_PR:-3}"
 DRY_RUN="${DOTFILES_IMPROVE_DRY_RUN:-0}"
