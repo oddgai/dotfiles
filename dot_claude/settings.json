@@ -91,7 +91,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "n=$(gh pr list --repo oddgai/dotfiles --state open --json headRefName --jq '[.[]|select(.headRefName|startswith(\"improve/dotfiles-\"))]|length' 2>/dev/null || echo 0); [ \"${n:-0}\" -gt 0 ] && echo \"📝 未レビューの自動改善PRが ${n}件 あります\" || true"
+            "command": "n=$(gh pr list --repo oddgai/dotfiles --state open --json headRefName --jq '[.[]|select(.headRefName|startswith(\"improve/dotfiles-\") or startswith(\"claude/dotfiles-\"))]|length' 2>/dev/null || echo 0); [ \"${n:-0}\" -gt 0 ] && echo \"📝 未レビューの自動改善PRが ${n}件 あります\" || true"
           }
         ]
       }
