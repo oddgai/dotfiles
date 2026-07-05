@@ -152,6 +152,7 @@
   "language": "follow CLAUDE.md's instructions",
   "spinnerTipsEnabled": true,
   "alwaysThinkingEnabled": true,
+  "askUserQuestionTimeout": "5m",
   "effortLevel": "high",
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
