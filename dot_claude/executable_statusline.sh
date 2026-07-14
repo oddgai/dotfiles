@@ -27,14 +27,14 @@ line="${CTX}% context used | ${MODEL}"
 
 if [ -n "$FIVE" ]; then
   if [ -n "$FIVE_RESET" ]; then
-    line="${line} | 5h $(printf '%.0f' "$FIVE")% ($(remaining "$FIVE_RESET"))"
+    line="${line} | session $(printf '%.0f' "$FIVE")% ($(remaining "$FIVE_RESET"))"
   else
-    line="${line} | 5h $(printf '%.0f' "$FIVE")%"
+    line="${line} | session $(printf '%.0f' "$FIVE")%"
   fi
 fi
 
 if [ -n "$WEEK" ]; then
-  line="${line} | 7d $(printf '%.0f' "$WEEK")%"
+  line="${line} | weekly $(printf '%.0f' "$WEEK")%"
 fi
 
 line="${line} | v${VERSION}"
