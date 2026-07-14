@@ -15,12 +15,12 @@ FIVE=$(printf '%s' "$input" | jq -r '.rate_limits.five_hour.used_percentage // e
 FIVE_RESET=$(printf '%s' "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 WEEK=$(printf '%s' "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 
-# リセット時刻(Unix秒)から「残りHhMm」を組み立てる
+# リセット時刻(Unix秒)から「HhMm left」を組み立てる
 remaining() {
   now=$(date +%s)
-  left=$(( $1 - now ))
-  if [ "$left" -lt 0 ]; then left=0; fi
-  printf '残り%dh%02dm' "$(( left / 3600 ))" "$(( (left % 3600) / 60 ))"
+  rem=$(( $1 - now ))
+  if [ "$rem" -lt 0 ]; then rem=0; fi
+  printf '%dh%02dm left' "$(( rem / 3600 ))" "$(( (rem % 3600) / 60 ))"
 }
 
 line="${CTX}% context used | ${MODEL}"
