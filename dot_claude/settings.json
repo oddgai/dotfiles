@@ -14,7 +14,10 @@
     "CLAUDE_CODE_ENABLE_TASKS": "true",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80"
   },
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [],
     "deny": [
@@ -36,6 +39,16 @@
       }
     ],
     "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
       {
         "hooks": [
           {
