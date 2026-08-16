@@ -12,6 +12,7 @@
     "CLAUDE_CODE_TMPDIR": "/tmp/claude",
     "FORCE_AUTOUPDATE_PLUGINS": "true",
     "CLAUDE_CODE_ENABLE_TASKS": "true",
+    "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80"
   },
   "includeCoAuthoredBy": false,
@@ -117,7 +118,7 @@
     "atlassian@claude-plugins-official": true,
     "figma@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
+  "additionalMarketplaces": {
     "anthropic-agent-skills": {
       "source": {
         "source": "github",
