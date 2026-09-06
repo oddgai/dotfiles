@@ -111,6 +111,7 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
+  "subagentPromptCacheTtl": "1h",
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
     "tech-pr@genda-plugins": true,
