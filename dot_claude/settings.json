@@ -160,5 +160,6 @@
   "preferredNotifChannel": "terminal_bell",
   "skipAutoPermissionPrompt": true,
   "installationMethod": "native",
-  "autoCompact": true
+  "autoCompact": true,
+  "bashEditDiffEnabled": true
 }
