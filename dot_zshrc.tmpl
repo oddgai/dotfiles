@@ -67,6 +67,16 @@ ZSH_THEME="refined"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+{{- if eq .chezmoi.os "darwin" }}
+# The docker CLI ships with Rancher Desktop, and oh-my-zsh's docker plugin probes
+# `docker --version` as it loads. Keep this ahead of oh-my-zsh: otherwise the probe
+# only sees the dangling /usr/local/bin/docker symlink that Docker Desktop left
+# behind and fails with "command not found: docker".
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="{{ .chezmoi.homeDir }}/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+{{- end }}
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -144,8 +154,4 @@ if [ -f '{{ .chezmoi.homeDir }}/Downloads/google-cloud-sdk/completion.zsh.inc' ]
 {{- if eq .chezmoi.os "darwin" }}
 
 export DOCKER_HOST="unix://$(podman machine inspect --format '{{ `{{.ConnectionInfo.PodmanSocket.Path}}` }}')"
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="{{ .chezmoi.homeDir }}/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 {{- end }}
