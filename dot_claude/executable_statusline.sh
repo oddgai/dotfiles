@@ -9,6 +9,8 @@ input=$(cat)
 CTX=$(printf '%s' "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 MODEL=$(printf '%s' "$input" | jq -r '.model.display_name // .model.id // "?"')
 VERSION=$(printf '%s' "$input" | jq -r '.version // "?"')
+# セッションのAPI換算コスト(USD)。サブスクでも算出される
+COST=$(printf '%s' "$input" | jq -r '.cost.total_cost_usd // empty')
 
 # 使用制限（Claude.ai サブスクのみ。初回APIレスポンス後に出現し、各枠は独立に欠けうる）
 FIVE=$(printf '%s' "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
@@ -35,6 +37,10 @@ fi
 
 if [ -n "$WEEK" ]; then
   line="${line} | weekly $(printf '%.0f' "$WEEK")%"
+fi
+
+if [ -n "$COST" ]; then
+  line="${line} | \$$(printf '%.2f' "$COST")"
 fi
 
 line="${line} | v${VERSION}"
