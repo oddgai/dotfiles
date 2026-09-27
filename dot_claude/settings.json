@@ -14,7 +14,10 @@
     "CLAUDE_CODE_ENABLE_TASKS": "true",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80"
   },
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [],
     "deny": [
