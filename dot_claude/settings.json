@@ -150,6 +150,7 @@
     }
   },
   "language": "follow CLAUDE.md's instructions",
+  "maxProseWidth": 120,
   "spinnerTipsEnabled": true,
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
