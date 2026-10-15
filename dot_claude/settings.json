@@ -25,6 +25,16 @@
     "defaultMode": "auto"
   },
   "hooks": {
+    "DirectoryAdded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
@@ -160,5 +170,6 @@
   "preferredNotifChannel": "terminal_bell",
   "skipAutoPermissionPrompt": true,
   "installationMethod": "native",
-  "autoCompact": true
+  "autoCompact": true,
+  "workflowSizeGuideline": "medium"
 }
