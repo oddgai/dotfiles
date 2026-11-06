@@ -1,5 +1,4 @@
 [user]
-	email = {{ .email }}
 	name = oddgai
 [ghq]
   root = ~/Documents/ghq
@@ -9,3 +8,6 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[include]
+	# email などマシン固有の設定（公開リポに置かないもの）
+	path = ~/.gitconfig.local
