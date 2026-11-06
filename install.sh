@@ -58,6 +58,28 @@ if [ ! -f "${HOME}/.gitconfig.local" ]; then
   printf '[user]\n\temail = \n' > "${HOME}/.gitconfig.local"
   echo "created ~/.gitconfig.local (email を設定してください)"
 fi
+
+# ghq.root はマシンごとに違ってよいので ~/.gitconfig.local に書く。
+# 優先順: 環境変数 GHQ_ROOT > このリポを clone した場所（<root>/github.com/oddgai/dotfiles）から推定
+if [ -z "$(git config --file "${HOME}/.gitconfig.local" --get ghq.root || true)" ]; then
+  ghq_root="${GHQ_ROOT:-}"
+  if [ -z "${ghq_root}" ]; then
+    case "${DOTFILES_DIR}" in
+      */github.com/oddgai/dotfiles) ghq_root="${DOTFILES_DIR%/github.com/oddgai/dotfiles}" ;;
+    esac
+  fi
+  if [ -n "${ghq_root}" ]; then
+    # $HOME 配下なら ~ 表記で書く（展開せず文字列として書き込み、ghq 側で展開させる）
+    # shellcheck disable=SC2088
+    case "${ghq_root}" in
+      "${HOME}"/*) ghq_root="~/${ghq_root#"${HOME}"/}" ;;
+    esac
+    git config --file "${HOME}/.gitconfig.local" ghq.root "${ghq_root}"
+    echo "set ghq.root = ${ghq_root} in ~/.gitconfig.local"
+  else
+    echo "ghq.root を判定できませんでした。GHQ_ROOT=<path> を付けて再実行するか、~/.gitconfig.local に書いてください。" >&2
+  fi
+fi
 if [ ! -f "${HOME}/.zshrc.local" ]; then
   printf '# このマシン専用の設定\n# export DATABRICKS_CLUSTER_ID="xxxx-xxxxxx-xxxxxxxx"\n' > "${HOME}/.zshrc.local"
   echo "created ~/.zshrc.local"

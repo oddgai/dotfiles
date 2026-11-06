@@ -35,18 +35,25 @@ macOS (Apple Silicon) 用の dotfiles。`home/` 配下を `$HOME` に symlink �
 # 1. Homebrew を入れる
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# 2. リポジトリを取得（ghq の root に合わせて ~/Documents/ghq 配下に置く）
-git clone https://github.com/oddgai/dotfiles.git ~/Documents/ghq/github.com/oddgai/dotfiles
+# 2. このマシンで使う ghq の root を決める（例: ~/ghq, ~/src, ~/Documents/ghq）
+GHQ_ROOT=~/ghq
 
-# 3. symlink を張り、brew bundle と mise install を実行
-~/Documents/ghq/github.com/oddgai/dotfiles/install.sh
+# 3. リポジトリを ghq の配置規則どおりに取得
+git clone https://github.com/oddgai/dotfiles.git "$GHQ_ROOT/github.com/oddgai/dotfiles"
 
-# 4. マシン固有値を書く
+# 4. symlink を張り、brew bundle と mise install を実行
+"$GHQ_ROOT/github.com/oddgai/dotfiles/install.sh"
+
+# 5. マシン固有値を書く
 #    ~/.gitconfig.local : [user] email
 #    ~/.zshrc.local     : DATABRICKS_CLUSTER_ID など
 ```
 
 既存のファイルは `~/.dotfiles-backup/<日時>/` に退避される。
+
+ghq の root は `~/.gitconfig.local` の `ghq.root` に書く（マシンごとに違ってよい）。
+`install.sh` は、未設定ならリポを clone した場所（`<root>/github.com/oddgai/dotfiles`）から推定して書き込む。
+別の場所に clone したときは `GHQ_ROOT=<path> ./install.sh` で明示する。
 symlink だけ張りたいときは `SKIP_PACKAGES=1 ./install.sh`。
 
 ## 日常運用

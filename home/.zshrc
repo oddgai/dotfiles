@@ -50,7 +50,7 @@ export CLICOLOR=1
 alias ls='ls -G'
 alias la='ls -lAh'
 alias g='git'
-alias repo='cd "$(ghq root)/$(ghq list | fzf)"'
+alias repo='cd "$(ghq list -p | fzf)"'
 alias ccd='claude'
 
 # ---- ツール ----
