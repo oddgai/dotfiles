@@ -4,6 +4,8 @@
 export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
+# Homebrew の PATH などを設定する（公式インストーラは ~/.zprofile への追記を案内するが、ここで面倒を見る）
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 BREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
 
 # ---- 履歴 ----
