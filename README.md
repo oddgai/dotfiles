@@ -22,6 +22,7 @@ macOS (Apple Silicon) 用の dotfiles。`home/` 配下を `$HOME` に symlink �
 | `home/.Brewfile` | `~/.Brewfile` | |
 | `home/.claude/` | `~/.claude/` | ファイル単位でリンク |
 | `home/.claude/settings.json` | `~/.claude/settings.json` | **リンクしない**。無いときだけコピー（下記） |
+| `install.sh` の `EXTERNAL_SKILLS` | `~/.claude/skills/<名前>/` | 外部の skill。Skills CLI で取得し、中身はリポに置かない |
 | `home/.config/ghostty/` `mise/` | `~/.config/...` | ファイル単位でリンク |
 
 秘密情報（SSH 鍵・AWS/Azure 認証・`gh` トークン等）やマシン固有値は **管理対象外**。
@@ -39,7 +40,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"  # このシェルで brew を使え�
 #    ~/ghq は ghq のデフォルト root。別の root を使っているマシンならそこに置く
 git clone https://github.com/oddgai/dotfiles.git ~/ghq/github.com/oddgai/dotfiles
 
-# 3. symlink を張り、brew bundle と mise install を実行
+# 3. symlink を張り、brew bundle・mise install・外部 skill の取得を実行
 ~/ghq/github.com/oddgai/dotfiles/install.sh
 
 # 4. マシン固有値を書く（install.sh が案内したものだけ）
@@ -57,6 +58,9 @@ git clone https://github.com/oddgai/dotfiles.git ~/ghq/github.com/oddgai/dotfile
 3. どちらも無ければ書かない（ghq はデフォルトの `~/ghq` を使う）
 
 symlink だけ張りたいときは `SKIP_PACKAGES=1 ./install.sh`。
+
+外部の skill（例: [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)）は `install.sh` の `EXTERNAL_SKILLS` に `"<リポ URL> <skill 名>"` で書く。
+`install.sh` を実行するたびに最新版で入れ直す。
 
 ## 日常運用
 

@@ -125,3 +125,19 @@ if command -v mise >/dev/null 2>&1; then
   echo "==> mise install"
   mise install
 fi
+
+# 外部の skill は Skills CLI (https://skills.sh) で ~/.claude/skills に入れる（中身はリポに置かない）。
+# 形式: "<リポ URL> <skill 名>"。CLI は版を固定して取得する
+SKILLS_CLI="skills@1.7.4"
+EXTERNAL_SKILLS=(
+  "https://github.com/cloudflare/security-audit-skill security-audit"
+)
+if command -v npx >/dev/null 2>&1; then
+  echo "==> external skills (${SKILLS_CLI})"
+  for entry in "${EXTERNAL_SKILLS[@]}"; do
+    read -r repo skill <<< "${entry}"
+    npx -y "${SKILLS_CLI}" add "${repo}" --skill "${skill}" --global --agent claude-code --yes
+  done
+else
+  echo "npx が見つかりません。mise install で node を入れてから再実行してください。" >&2
+fi
