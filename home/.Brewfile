@@ -1,8 +1,10 @@
 # Managed by oddgai/dotfiles (home/.Brewfile).
 # Apply with: brew bundle --global
 
+tap "abue-ammar/tinycast"
 tap "atlassian/acli"
 tap "databricks/tap"
+tap "stablyai/orca"
 
 # CLI tools (cross-platform)
 brew "azure-cli"
@@ -46,7 +48,19 @@ npm "corepack"
 # macOS
 brew "cocoapods"
 cask "alt-tab"
+cask "appcleaner"
+cask "azookey"
+cask "flux-app"
+cask "font-hackgen"
 cask "font-symbols-only-nerd-font"
+cask "ghostty"
+cask "google-chrome"
+cask "iina"
+cask "logi-options+"
+cask "stablyai/orca/orca"
+cask "abue-ammar/tinycast/tinycast"
+cask "vlc"
+cask "zed"
 
 # VS Code extensions
 vscode "anthropic.claude-code"
