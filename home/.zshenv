@@ -1,2 +1,2 @@
 export CLAUDE_CONFIG_DIR="${HOME}"/.claude
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

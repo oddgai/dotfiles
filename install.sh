@@ -25,6 +25,15 @@ link() {
   echo "link:   ${dst} -> ${src}"
 }
 
+# 既存の ~/.gitconfig は symlink に置き換えて退避するので、その前にマシン固有の値を読んでおく
+# （~/.gitconfig.local へ引き継ぐ）
+old_gitconfig_email=""
+old_gitconfig_ghq_root=""
+if [ -f "${HOME}/.gitconfig" ] && [ ! -L "${HOME}/.gitconfig" ]; then
+  old_gitconfig_email="$(git config --file "${HOME}/.gitconfig" --get user.email || true)"
+  old_gitconfig_ghq_root="$(git config --file "${HOME}/.gitconfig" --get-all ghq.root | head -n 1 || true)"
+fi
+
 echo "==> symlink dotfiles"
 # Karabiner-Elements はファイル単位の symlink だと変更を検知しないので、ディレクトリごとリンクする
 link "${SRC}/.config/karabiner" "${HOME}/.config/karabiner"
@@ -55,8 +64,46 @@ done < <(find "${SRC}" -type f ! -name '.DS_Store' -print0)
 
 echo "==> machine-local files"
 if [ ! -f "${HOME}/.gitconfig.local" ]; then
-  printf '[user]\n\temail = \n' > "${HOME}/.gitconfig.local"
-  echo "created ~/.gitconfig.local (email を設定してください)"
+  touch "${HOME}/.gitconfig.local"
+  echo "created ~/.gitconfig.local"
+fi
+gitconfig_local_get() { git config --file "${HOME}/.gitconfig.local" --get "$1" || true; }
+
+if [ -z "$(gitconfig_local_get user.email)" ]; then
+  if [ -n "${old_gitconfig_email}" ]; then
+    git config --file "${HOME}/.gitconfig.local" user.email "${old_gitconfig_email}"
+    echo "set user.email = ${old_gitconfig_email} in ~/.gitconfig.local (元の ~/.gitconfig から引き継ぎ)"
+  else
+    # shellcheck disable=SC2088  # 案内文なので ~ はそのまま表示する
+    echo "~/.gitconfig.local に user.email を設定してください: git config --file ~/.gitconfig.local user.email <email>"
+  fi
+fi
+
+# ghq.root はマシンごとに違ってよいので ~/.gitconfig.local に書く。
+# 優先順: 元の ~/.gitconfig の値 > このリポを clone した場所（<root>/github.com/oddgai/dotfiles）から推定。
+# どちらも無ければ書かず、ghq のデフォルト（~/ghq。環境変数 GHQ_ROOT があればそれ）に任せる
+if [ -z "$(gitconfig_local_get ghq.root)" ]; then
+  ghq_root="${old_gitconfig_ghq_root}"
+  ghq_root_source="元の ~/.gitconfig から引き継ぎ"
+  if [ -z "${ghq_root}" ]; then
+    case "${DOTFILES_DIR}" in
+      */github.com/oddgai/dotfiles)
+        ghq_root="${DOTFILES_DIR%/github.com/oddgai/dotfiles}"
+        ghq_root_source="clone した場所から推定"
+        ;;
+    esac
+  fi
+  if [ -n "${ghq_root}" ]; then
+    # $HOME 配下なら ~ 表記で書く（展開せず文字列として書き込み、ghq 側で展開させる）
+    # shellcheck disable=SC2088
+    case "${ghq_root}" in
+      "${HOME}"/*) ghq_root="~/${ghq_root#"${HOME}"/}" ;;
+    esac
+    git config --file "${HOME}/.gitconfig.local" ghq.root "${ghq_root}"
+    echo "set ghq.root = ${ghq_root} in ~/.gitconfig.local (${ghq_root_source})"
+  else
+    echo "ghq.root は未設定のままにします（ghq のデフォルトを使う）"
+  fi
 fi
 if [ ! -f "${HOME}/.zshrc.local" ]; then
   printf '# このマシン専用の設定\n# export DATABRICKS_CLUSTER_ID="xxxx-xxxxxx-xxxxxxxx"\n' > "${HOME}/.zshrc.local"
