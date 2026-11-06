@@ -105,7 +105,6 @@
   },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
-    "tech-pr@genda-plugins": true,
     "atlassian@claude-plugins-official": true,
     "figma@claude-plugins-official": true
   },
@@ -132,12 +131,6 @@
       "source": {
         "source": "github",
         "repo": "obra/superpowers-marketplace"
-      }
-    },
-    "genda-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "genda-playground/claude-code-marketplace"
       }
     }
   },
