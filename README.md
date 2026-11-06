@@ -23,7 +23,6 @@ macOS (Apple Silicon) 用の dotfiles。`home/` 配下を `$HOME` に symlink �
 | `home/.claude/` | `~/.claude/` | ファイル単位でリンク |
 | `home/.claude/settings.json` | `~/.claude/settings.json` | **リンクしない**。無いときだけコピー（下記） |
 | `home/.config/ghostty/` `mise/` | `~/.config/...` | ファイル単位でリンク |
-| `home/.config/karabiner/` | `~/.config/karabiner` | ディレクトリごとリンク |
 
 秘密情報（SSH 鍵・AWS/Azure 認証・`gh` トークン等）やマシン固有値は **管理対象外**。
 
