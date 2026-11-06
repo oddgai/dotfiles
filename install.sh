@@ -56,6 +56,9 @@ fi
 if command -v brew >/dev/null 2>&1; then
   echo "==> brew bundle (~/.Brewfile)"
   brew bundle --global
+  # share がグループ書き込み可だと compinit が「安全でないディレクトリ」として補完の読み込みを止める
+  # （zsh-completions の caveats で Homebrew が案内している対処）
+  chmod go-w "$(brew --prefix)/share"
 else
   echo "brew が見つかりません。Homebrew を入れてから再実行してください。" >&2
 fi
