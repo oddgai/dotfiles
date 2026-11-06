@@ -1,12 +1,12 @@
-# Managed by chezmoi (source: dot_Brewfile.tmpl).
+# Managed by oddgai/dotfiles (home/.Brewfile).
 # Apply with: brew bundle --global
-# Casks / VS Code extensions / cocoapods are macOS only.
 
 tap "atlassian/acli"
 tap "databricks/tap"
 
 # CLI tools (cross-platform)
 brew "azure-cli"
+brew "curl"
 brew "deck"
 brew "docker"
 brew "fd"
@@ -38,8 +38,7 @@ npm "@aikidosec/safe-chain"
 npm "@openai/codex"
 npm "corepack"
 
-{{ if eq .chezmoi.os "darwin" -}}
-# macOS only
+# macOS
 brew "cocoapods"
 cask "alt-tab"
 cask "font-symbols-only-nerd-font"
@@ -95,4 +94,3 @@ vscode "visualstudioexptteam.intellicode-api-usage-examples"
 vscode "visualstudioexptteam.vscodeintellicode"
 vscode "vscode-icons-team.vscode-icons"
 vscode "yzhang.markdown-all-in-one"
-{{ end -}}

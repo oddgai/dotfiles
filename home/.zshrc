@@ -67,15 +67,13 @@ ZSH_THEME="refined"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-{{- if eq .chezmoi.os "darwin" }}
 # The docker CLI ships with Rancher Desktop, and oh-my-zsh's docker plugin probes
 # `docker --version` as it loads. Keep this ahead of oh-my-zsh: otherwise the probe
 # only sees the dangling /usr/local/bin/docker symlink that Docker Desktop left
 # behind and fails with "command not found: docker".
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="{{ .chezmoi.homeDir }}/.rd/bin:$PATH"
+export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-{{- end }}
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -134,24 +132,21 @@ eval "$(zoxide init zsh)"
 # claude code alias
 alias ccd='claude'
 
-{{- if eq .chezmoi.os "darwin" }}
 # Added by Antigravity
-export PATH="{{ .chezmoi.homeDir }}/.antigravity/antigravity/bin:$PATH"
-{{- end }}
-{{- if index . "databricksClusterId" }}
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+# macOS の /usr/bin/curl は CA の失効を反映しないので、Homebrew の curl を優先する
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
-export DATABRICKS_CLUSTER_ID="{{ index . "databricksClusterId" }}"
-{{- end }}
+# マシン固有の設定（DATABRICKS_CLUSTER_ID など）は ~/.zshrc.local に書く
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
 
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
 eval "$(mise activate zsh)"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '{{ .chezmoi.homeDir }}/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '{{ .chezmoi.homeDir }}/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '{{ .chezmoi.homeDir }}/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '{{ .chezmoi.homeDir }}/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-{{- if eq .chezmoi.os "darwin" }}
+if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
 
-export DOCKER_HOST="unix://$(podman machine inspect --format '{{ `{{.ConnectionInfo.PodmanSocket.Path}}` }}')"
-{{- end }}
+export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
