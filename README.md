@@ -21,10 +21,13 @@ macOS (Apple Silicon) 用の dotfiles。`home/` 配下を `$HOME` に symlink �
 | `home/.gitconfig` | `~/.gitconfig` | email は `~/.gitconfig.local` |
 | `home/.Brewfile` | `~/.Brewfile` | |
 | `home/.claude/` | `~/.claude/` | ファイル単位でリンク |
+| `home/.claude/settings.json` | `~/.claude/settings.json` | **リンクしない**。無いときだけコピー（下記） |
 | `home/.config/ghostty/` `mise/` | `~/.config/...` | ファイル単位でリンク |
 | `home/.config/karabiner/` | `~/.config/karabiner` | ディレクトリごとリンク |
 
 秘密情報（SSH 鍵・AWS/Azure 認証・`gh` トークン等）やマシン固有値は **管理対象外**。
+
+`~/.claude/settings.json` は Claude Code 自身や外部ツールが書き込み、auto mode の環境情報（業務リポの構成など）やマシン固有のフックが入る。symlink にすると公開リポの作業ツリーに書かれてしまうため、初回だけコピーし、以後はリポと同期しない。共通化したい設定は手で `home/.claude/settings.json` に反映する。
 
 ## 新しい Mac でのセットアップ
 

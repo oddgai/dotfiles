@@ -29,11 +29,26 @@ echo "==> symlink dotfiles"
 # Karabiner-Elements はファイル単位の symlink だと変更を検知しないので、ディレクトリごとリンクする
 link "${SRC}/.config/karabiner" "${HOME}/.config/karabiner"
 
+# settings.json は Claude Code や外部ツール（auto mode の環境情報、各種フック）が書き込み、
+# 社外秘やマシン固有の内容が入る。symlink だと公開リポの作業ツリーに書かれるので、無いときだけコピーする
+copy_if_missing() {
+  local src="$1" dst="$2"
+  if [ -e "${dst}" ] || [ -L "${dst}" ]; then
+    echo "keep:   ${dst} (既存のファイルを残す)"
+    return
+  fi
+  mkdir -p "$(dirname "${dst}")"
+  cp "${src}" "${dst}"
+  echo "copy:   ${dst} <- ${src}"
+}
+copy_if_missing "${SRC}/.claude/settings.json" "${HOME}/.claude/settings.json"
+
 # それ以外はファイル単位でリンクする（~/.claude などはツールの状態も置かれるため）
 while IFS= read -r -d '' file; do
   rel="${file#"${SRC}"/}"
   case "${rel}" in
     .config/karabiner/*) continue ;;
+    .claude/settings.json) continue ;;
   esac
   link "${file}" "${HOME}/${rel}"
 done < <(find "${SRC}" -type f ! -name '.DS_Store' -print0)
