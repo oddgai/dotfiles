@@ -40,15 +40,50 @@ eval "$(/opt/homebrew/bin/brew shellenv)"  # このシェルで brew を使え�
 #    ~/ghq は ghq のデフォルト root。別の root を使っているマシンならそこに置く
 git clone https://github.com/oddgai/dotfiles.git ~/ghq/github.com/oddgai/dotfiles
 
-# 3. symlink を張り、brew bundle・mise install・外部 skill の取得を実行
+# 3. Brewfile で使う外部 tap を信頼する（新しい Mac で一度だけ）
+brew trust --tap abue-ammar/tinycast atlassian/acli databricks/tap stablyai/orca
+
+# 4. symlink を張り、brew bundle・mise install・外部 skill の取得を実行
 ~/ghq/github.com/oddgai/dotfiles/install.sh
 
-# 4. マシン固有値を書く（install.sh が案内したものだけ）
+# 5. マシン固有値を書く（install.sh が案内したものだけ）
 #    ~/.gitconfig.local : user.email
 #    ~/.zshrc.local     : DATABRICKS_CLUSTER_ID など
+
+# 6. 新しいシェルで設定を読み込む
+exec zsh -l
 ```
 
 既存のファイルは `~/.dotfiles-backup/<日時>/` に退避される。
+
+### コマンドでインストールするもの
+
+インストール一覧は [`home/.Brewfile`](home/.Brewfile) で管理する。次のアプリ・ツールも `install.sh` からまとめて導入される。
+
+| 用途 | アプリ・ツール |
+| --- | --- |
+| ブラウザ | Google Chrome |
+| 入力・周辺機器 | azooKey on macOS、Logi Options+ |
+| エディタ・開発環境 | Zed、Orca、Ghostty |
+| 動画再生 | IINA、VLC |
+| ユーティリティ | Tinycast、f.lux、AppCleaner |
+| フォント | HackGen |
+| CLI | Codex CLI、GitHub CLI (`gh`)、ghq、lazygit、mise |
+
+azooKey と HackGen は Homebrew の cask として管理する（[azooKey](https://formulae.brew.sh/cask/azookey)、[HackGen](https://formulae.brew.sh/cask/font-hackgen)）。Codex CLI は Brewfile の `npm "@openai/codex"` で管理する。
+
+[Tinycast](https://tinycast.dev/docs/install/) と [Orca](https://github.com/stablyai/homebrew-orca) は外部 tap から導入する。cask 名は tap を含めて指定し、同名の別アプリとの混同を避ける。
+
+### インストール後の手動チェックリスト
+
+- [ ] RunCat Neo を手動でインストール・設定する。
+- [ ] デバイス名を変更する: システム設定 → 一般 → 情報 → 名前。
+- [ ] すべてのファイル名拡張子を表示する: Finder → 設定 → 詳細 →「すべてのファイル名拡張子を表示」をオン。
+- [ ] キーバインドを変更する: システム設定 → キーボード → キーボードショートカット。修飾キーの入れ替えは同画面の「修飾キー」で設定する。具体的な割り当ては未記録のため、変更時にこのチェックリストへ追記する。
+- [ ] azooKey: macOS からログアウト・再ログインし、システム設定 → キーボード → 入力ソースの編集 →「+」→ 日本語 → azooKey を追加して選択する（[公式手順](https://github.com/azooKey/azooKey-Desktop#リリース版インストール)）。
+- [ ] Logi Options+: Mac を再起動してインストールを反映し、起動後の案内に従って権限とデバイス設定を行う（[Homebrew の案内](https://formulae.brew.sh/cask/logi-options%2B)）。
+
+### マシン固有値と再実行
 
 `user.email` と ghq の root（`ghq.root`）はマシンごとの値なので `~/.gitconfig.local` に書く。
 `install.sh` は未設定なら次の順で決めて書き込むので、通常は手で設定しなくてよい。
